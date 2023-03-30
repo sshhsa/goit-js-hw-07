@@ -10,7 +10,7 @@ function createImagesCards(arrayImages) {
   const elementOfArray = arrayImages
     .map(({ preview, original, description, id }) => {
       return `<li class="gallery__item">
-  <a class="gallery__link" href="${original}">
+  <a class="gallery__link" href="${original}" data-slb-active>
     <img
       class="gallery__image"
       id="${id}"
@@ -24,4 +24,10 @@ function createImagesCards(arrayImages) {
     })
     .join('');
   return elementOfArray;
+}
+
+containerImages.addEventListener('click', onContainerImagesClick);
+
+function onContainerImagesClick(e) {
+  e.preventDefault();
 }
