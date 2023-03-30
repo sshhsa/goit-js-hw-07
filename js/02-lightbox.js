@@ -1,4 +1,27 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
+const containerImages = document.querySelector('.gallery');
+const callFunctionGallery = createImagesCards(galleryItems);
+
+containerImages.insertAdjacentHTML('beforeend', callFunctionGallery);
+
+function createImagesCards(arrayImages) {
+  const elementOfArray = arrayImages
+    .map(({ preview, original, description, id }) => {
+      return `<li class="gallery__item">
+  <a class="gallery__link" href="${original}">
+    <img
+      class="gallery__image"
+      id="${id}"
+      src="${preview}"
+      data-source="${original}"
+      data-img-id="${id}"
+      alt="${description}"
+    />
+  </a>
+</li>`;
+    })
+    .join('');
+  return elementOfArray;
+}

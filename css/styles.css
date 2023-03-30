@@ -44,3 +44,24 @@
 }
 
 /* ------------- Modal window ------------- */
+
+.basicLightbox__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.basicLightbox__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: calc(100% - 100px);
+  max-width: calc(100% - 100px);
+}
+
+.basicLightbox__placeholder img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}

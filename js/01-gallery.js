@@ -16,6 +16,7 @@ function createImagesCards(arrayImages) {
       id="${id}"
       src="${preview}"
       data-source="${original}"
+      data-img-id="${id}"
       alt="${description}"
     />
   </a>
@@ -36,5 +37,28 @@ function onContainerImagesClick(e) {
   const imgId =
     e.target.dataset.imgId ?? e.target.closest('.js_target').dataset.imgId;
   const currentItem = galleryItems.find(({ id }) => id === Number(imgId));
-  console.log(currentItem);
+
+  const instance = basicLightbox.create(`
+    <img
+      class="gallery__image js_target"
+      id="${currentItem.id}"
+      src="${currentItem.preview}"
+      max-width="100%"
+      max-height="100%"
+      data-source="${currentItem.original}"
+      data-img-id="${currentItem.id}"
+      alt="${currentItem.description}"
+    />`);
+
+  if (instance.show()) {
+    window.addEventListener('keydown', onPressEscape);
+
+    function onPressEscape(event) {
+      if (event.keyCode === 27) {
+        instance.close();
+        console.log(event);
+        window.removeEventListener('keydown', onPressEscape);
+      }
+    }
+  }
 }
