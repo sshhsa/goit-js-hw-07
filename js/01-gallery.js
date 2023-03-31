@@ -1,54 +1,37 @@
 import { galleryItems } from './gallery-items.js';
+
 // Change code below this line
 
-const containerImages = document.querySelector('.gallery');
-const callFunctionGallery = createImagesCards(galleryItems);
-
-containerImages.insertAdjacentHTML('beforeend', callFunctionGallery);
-
-function createImagesCards(arrayImages) {
-  const elementOfArray = arrayImages
-    .map(({ preview, original, description, id }) => {
-      return `<li class="gallery__item">
-  <a class="gallery__link" href="${original}">
-    <img
-      class="gallery__image js_target"
-      id="${id}"
-      src="${preview}"
-      data-source="${original}"
-      data-img-id="${id}"
-      alt="${description}"
-    />
-  </a>
-</li>`;
+const galleryContainer = document.querySelector('.gallery');
+function createGalleryCardsMarkup(items) {
+  return items
+    .map(({ preview, original, description }) => {
+      return `
+    <div class="gallery__item">
+        <a class="gallery__link" href="${original}">
+        <img
+            class="gallery__image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}" />
+        </a>
+    </div>
+    `;
     })
     .join('');
-  return elementOfArray;
 }
-
-containerImages.addEventListener('click', onContainerImagesClick);
-
-function onContainerImagesClick(e) {
-  e.preventDefault();
-  if (!e.target.classList.contains('js_target')) {
+const cardsMarkup = createGalleryCardsMarkup(galleryItems);
+galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
+galleryContainer.addEventListener('click', handleGalleryClick);
+function handleGalleryClick(event) {
+  event.preventDefault();
+  if (event.target.nodeName !== 'IMG') {
     return;
   }
-
-  const imgId =
-    e.target.dataset.imgId ?? e.target.closest('.js_target').dataset.imgId;
-  const currentItem = galleryItems.find(({ id }) => id === Number(imgId));
-
-  const instance = basicLightbox.create(`
-    <img
-      class="gallery__image js_target"
-      id="${currentItem.id}"
-      src="${currentItem.preview}"
-      max-width="100%"
-      max-height="100%"
-      data-source="${currentItem.original}"
-      data-img-id="${currentItem.id}"
-      alt="${currentItem.description}"
-    />`);
+  const modalImg = event.target.dataset.source;
+  const instance = basicLightbox.create(
+    `<img src="${modalImg}" alt="" width="800" height="600">`
+  );
 
   if (instance.show()) {
     window.addEventListener('keydown', onPressEscape);
